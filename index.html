@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24-Hour Analog Clock with Prayer Times (Yearly Simulation)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Naskh+Arabic:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="date-display"></div>
+    <div id="prayer-time-info">Loading prayer times...</div>
+    <button id="simulateYearBtn">Simulate Year of Prayer Times</button>
+    <div id="simulation-status" style="margin-top: 10px; min-height: 1.2em;"></div>
+
+    <div class="master-clock-container">
+        <div class="clock-container">
+            <div class="hand hour-hand" data-hour-hand></div>
+            <div class="hand minute-hand" data-minute-hand></div>
+            <div class="hand second-hand" data-second-hand></div>
+            <div class="center-dot"></div>
+            <!-- Clock numbers and hour markers will be added by JS if not using SVG face -->
+        </div>
+        <div class="prayer-ring">
+            <!-- Prayer markers will be added here by JS -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

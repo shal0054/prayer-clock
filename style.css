@@ -1,0 +1,238 @@
+:root {
+  --clock-size: 330px;
+  --body-bg: #0B1F3A;
+  --clock-border-color: #D4AF37; /* Gold */
+  --face-bg: #F5F5DC;
+  --number-color: #3A2E1F;
+  --hour-hand-color: #B08D57;
+  --minute-hand-color: #3A2E1F;
+  --second-hand-color: #C04000;
+  --center-dot-color: var(--clock-border-color);
+  --date-color: #E0D6C3;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --marker-color: rgba(58, 46, 31, 0.5);
+  --prayer-marker-color: var(--clock-border-color);
+  --prayer-marker-bg: rgba(11, 31, 58, 0.8); /* Slightly transparent body-bg */
+
+  --clock-actual-outer-radius: calc(var(--clock-size) / 2 + 8px);
+  --clock-visual-outer-radius-with-blue-shadow: calc(var(--clock-actual-outer-radius) + 4px);
+  --prayer-ring-offset: 12px;
+  --prayer-marker-size: 12px;
+  --prayer-marker-path-radius: calc(var(--clock-visual-outer-radius-with-blue-shadow) + var(--prayer-ring-offset) + (var(--prayer-marker-size) / 2));
+  --master-container-size: calc(var(--prayer-marker-path-radius) * 2);
+
+  /* Colors for the prayer ring gradient segments */
+  --color-segment-1: #003f5c; /* Isha to Fajr */
+  --color-segment-2: #2f7a90; /* Fajr to Dhuhr */
+  --color-segment-3: #f9a828; /* Dhuhr to Asr */
+  --color-segment-4: #c97b41; /* Asr to Maghrib */
+  --color-segment-5: #8c503a; /* Maghrib to Isha */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--body-bg);
+  background-image:
+      radial-gradient(circle at center, rgba(255,215,0,0.03) 0%, rgba(255,215,0,0.03) 1px, transparent 1px, transparent 100%),
+      radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 100%);
+  background-size: 40px 40px, 20px 20px;
+  font-family: 'Marcellus', serif;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  color: var(--date-color);
+}
+
+#date-display {
+  font-size: 1.9em;
+  margin-bottom: 15px;
+  font-weight: 400;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  text-align: center;
+  color: var(--date-color);
+  letter-spacing: 1px;
+}
+
+#prayer-time-info {
+  font-size: 0.9em;
+  /* margin-top is now on master-clock-container parent */
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--date-color);
+  opacity: 0.9; 
+  max-width: 90%;
+  line-height: 1.4;
+  min-height: 2.8em; 
+}
+
+#prayer-time-info strong { 
+  color: var(--clock-border-color);
+  font-weight: 600;
+}
+
+#simulateYearBtn { 
+  padding: 8px 15px; 
+  font-family: 'Marcellus', serif; 
+  background-color: var(--clock-border-color); 
+  color: var(--body-bg); 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 0.9em; 
+  margin-bottom:10px; 
+}
+
+#simulateYearBtn:disabled { 
+  background-color: #555; 
+  color: #aaa; 
+  cursor: not-allowed;
+}
+
+#simulation-status { 
+  font-size: 0.8em; 
+  color: var(--date-color); 
+  min-height: 1.2em; 
+  text-align: center;
+}
+
+.master-clock-container { 
+  position: relative; 
+  width: var(--master-container-size); 
+  height: var(--master-container-size); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  margin-top: 10px; /* Gap above the clock assembly */
+}
+
+.clock-container { 
+  width: var(--clock-size); 
+  height: var(--clock-size); 
+  border-radius: 50%; 
+  border: 8px solid var(--clock-border-color); 
+  box-shadow: 0 5px 30px var(--shadow-color), 
+              inset 0 0 20px rgba(0,0,0,0.15), 
+              0 0 0 4px var(--body-bg), 
+              0 0 0 8px rgba(212, 175, 55, 0.5); 
+  position: relative; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background-color: var(--face-bg); 
+  background-image: url("data:image/svg+xml,%3csvg width='50' height='50' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='50' height='50' fill='%23F5F5DC'/%3e%3cpath d='M25 2 L29.27 12.27 L40.53 15.73 L32.27 25 L40.53 34.27 L29.27 37.73 L25 48 L20.73 37.73 L9.47 34.27 L17.73 25 L9.47 15.73 L20.73 12.27 Z' stroke='rgba(176,141,87,0.35)' stroke-width='1' fill='none'/%3e%3cpath d='M0 25 L50 25 M25 0 L25 50' stroke='rgba(176,141,87,0.20)' stroke-width='0.6' fill='none'/%3e%3cpath d='M0 0 L50 50 M0 50 L50 0' stroke='rgba(176,141,87,0.20)' stroke-width='0.6' fill='none'/%3e%3c/svg%3e"); 
+  background-size: 50px 50px; 
+  background-repeat: repeat; 
+  z-index: 10; 
+}
+      
+.prayer-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.prayer-marker { 
+  position: absolute; 
+  width: var(--prayer-marker-size); 
+  height: var(--prayer-marker-size); 
+  background-color: var(--prayer-marker-bg); 
+  border: 1.5px solid var(--prayer-marker-color); 
+  border-radius: 50% 0; 
+  transform-origin: center center; 
+  box-shadow: 0 0 3px rgba(212, 175, 55, 0.7); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: calc(var(--prayer-marker-size) * 0.55); 
+  font-weight: bold; 
+  color: var(--prayer-marker-color); 
+  pointer-events: auto; 
+  z-index: 6; 
+}
+.prayer-marker.fajr::before { content: "F"; } 
+.prayer-marker.dhuhr::before { content: "D"; } 
+.prayer-marker.asr::before { content: "A"; } 
+.prayer-marker.maghrib::before { content: "M"; } 
+.prayer-marker.isha::before { content: "I"; }
+
+.hand { 
+  position: absolute; 
+  bottom: 50%; 
+  left: 50%; 
+  transform-origin: bottom center; 
+  border-radius: 4px 4px 1px 1px; 
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.3); 
+  z-index: 20; 
+}
+.hour-hand { width: 7px; height: 26%; background-color: var(--hour-hand-color); } 
+.minute-hand { width: 5px; height: 37%; background-color: var(--minute-hand-color); z-index: 21; } 
+.second-hand { width: 2px; height: 41%; background-color: var(--second-hand-color); z-index: 22; }
+
+.center-dot { 
+  width: 14px; 
+  height: 14px; 
+  background-color: var(--center-dot-color); 
+  border: 2px solid var(--face-bg); 
+  border-radius: 50%; 
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  z-index: 23; 
+  box-shadow: 0 0 6px rgba(0,0,0,0.4); 
+}
+.center-dot::after { 
+  content: ''; 
+  position: absolute; 
+  width: 5px; 
+  height: 5px; 
+  background-color: var(--number-color); 
+  border-radius: 50%; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+}
+
+.clock-number { 
+  position: absolute; 
+  transform: translate(-50%, -50%); 
+  font-size: calc(var(--clock-size) * 0.09); 
+  font-family: 'Noto Naskh Arabic', 'Marcellus', serif; 
+  font-weight: 700; 
+  color: var(--number-color); 
+  z-index: 15; 
+  padding: 2px; 
+  text-shadow: 0px 0px 3px var(--face-bg), 0px 0px 5px var(--face-bg); 
+}
+
+.marker { 
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  display: flex; 
+  justify-content: center; 
+  align-items: flex-start; 
+  z-index: 12; 
+}
+.marker::before { 
+  content: ''; 
+  background-color: var(--marker-color); 
+  display: block; 
+  margin-top: calc(var(--clock-size) * 0.025); 
+  border-radius: 1px; 
+}
+.marker.minor::before { width: calc(var(--clock-size) * 0.008); height: calc(var(--clock-size) * 0.025); } 
+.marker.cardinal::before { 
+  width: calc(var(--clock-size) * 0.015); 
+  height: calc(var(--clock-size) * 0.05); 
+  background-color: var(--clock-border-color); 
+}
